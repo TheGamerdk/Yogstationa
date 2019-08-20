@@ -274,6 +274,36 @@
 	admin_take_gangtool(user)
 	demote()
 
+/datum/antagonist/gang/boss/prison
+	name = "Prison boss"
+	hud_type = "gang_boss"
+	message_name = "Leader"
+
+/datum/antagonist/gang/boss/prison/equip_gang(gangtool = FALSE, pen = TRUE, spraycan = TRUE, hud = TRUE, prisontool = TRUE)
+	var/mob/living/carbon/human/H = owner.current
+	if(!istype(H))
+		return
+
+	var/list/slots = list (
+		"backpack" = SLOT_IN_BACKPACK,
+		"left pocket" = SLOT_L_STORE,
+		"right pocket" = SLOT_R_STORE,
+		"hands" = SLOT_HANDS
+	)
+
+
+	if(prisontool)
+		var/obj/item/gangtool/prison/G = new()
+		var/where = H.equip_in_one_of_slots(G, slots)
+		if (!where)
+			to_chat(H, "Your Syndicate benefactors were unfortunately unable to get you a Gangtool.")
+		else
+			G.register_device(H)
+			to_chat(H, "The <b>Gangtool</b> in your [where] will allow you to purchase weapons and equipment, send messages to your gang, and recall the emergency shuttle from anywhere on the station.")
+			to_chat(H, "As the gang boss, you can also promote your gang members to <b>lieutenant</b>. Unlike regular gangsters, Lieutenants cannot be deconverted and are able to use recruitment pens and gangtools.")
+
+	. = ..(FALSE)
+
 /datum/antagonist/gang/boss/lieutenant
 	name = "Gang Lieutenant"
 	message_name = "Lieutenant"
@@ -423,7 +453,7 @@
 		if(ishuman(gangmind.current))
 			var/mob/living/carbon/human/gangster = gangmind.current
 			//Gangster must be alive and on station
-			if((gangster.stat == DEAD) || (is_station_level(gangster.z)))
+			if((gangster.stat == DEAD) || (!is_station_level(gangster.z)))
 				continue
 
 			var/obj/item/clothing/outfit

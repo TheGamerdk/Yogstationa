@@ -373,3 +373,79 @@
 /datum/gang_item/equipment/dominator/spawn_item(mob/living/carbon/user, datum/team/gang/gang, obj/item/gangtool/gangtool)
 	new item_path(user.loc)
 	to_chat(user, spawn_msg)
+
+
+/*
+	Prison Event Items
+*/
+
+/datum/gang_item/prison/equipment
+	category = "Purchase Equipment:"
+
+/datum/gang_item/prison/equipment/spraycan
+	name = "Territory Spraycan"
+	id = "spraycan"
+	cost = 5
+	item_path = /obj/item/toy/crayon/spraycan/gang
+
+/datum/gang_item/prison/equipment/spraycan/spawn_item(mob/living/carbon/user, datum/team/gang/gang, obj/item/gangtool/gangtool)
+	var/obj/item/O = new item_path(user.loc, gang)
+	user.put_in_hands(O)
+
+/datum/gang_item/prison/clothing
+	category = "Purchase Gang Clothes (These are VERY important for getting influence!):"
+
+/datum/gang_item/prison/clothing/under
+	name = "Gang Uniform"
+	id = "under"
+	cost = 1
+
+/datum/gang_item/prison/clothing/under/spawn_item(mob/living/carbon/user, datum/team/gang/gang, obj/item/gangtool/gangtool)
+	if(gang.inner_outfits.len)
+		var/outfit = pick(gang.inner_outfits)
+		if(outfit)
+			var/obj/item/O = new outfit(user.loc)
+			user.put_in_hands(O)
+			to_chat(user, "<span class='notice'> This is your gang's official uniform, wearing it will increase your influence")
+			return
+	return TRUE
+
+/datum/gang_item/prison/structure
+	category = "Purchase Structure (Will be placed at your feet):"
+
+/datum/gang_item/prison/structure/equipment_machine
+	name = "Contraband Teleporter"
+	id = "equipment_machine"
+	cost = 50
+	item_path = /obj/machinery/contraband_teleporter
+	spawn_msg = "<span class='notice'>The <b>contraband teleporter</b> will teleport weapons and equipment inside the prison, for a price. Only Gang Leaders can use this.</span>"
+
+/datum/gang_item/prison/structure/equipment_machine/spawn_item(mob/living/carbon/user, datum/team/gang/gang, obj/item/gangtool/gangtool)
+	new item_path(user.loc)
+	to_chat(user, spawn_msg)
+
+/datum/gang_item/prison/structure/equipment_machine/get_extra_info(mob/living/carbon/user, datum/team/gang/gang, obj/item/gangtool/gangtool)
+	if(gang)
+		return "This device requires a 3x3 area clear of walls to work."
+
+
+/datum/gang_item/prison/structure/equipment_machine/purchase(mob/living/carbon/user, datum/team/gang/gang, obj/item/gangtool/gangtool)
+	var/area/userarea = get_area(user)
+	if(!(userarea.type in gang.territories|gang.new_territories))
+		to_chat(user,"<span class='warning'>The contraband teleporter can only be bought in territory controlled by your gang!</span>")
+		return FALSE
+	for(var/obj/obj in get_turf(user))
+		if(obj.density)
+			to_chat(user, "<span class='warning'>There's not enough room here!</span>")
+			return FALSE
+
+	return ..()
+
+/datum/gang_item/contraband/weapons
+	category = "Purchase Weapons:"
+
+/datum/gang_item/contraband/weapons/test
+	name = "Test"
+	id = "testu"
+	cost = 1
+	item_path = /obj/item/kitchen/knife

@@ -2934,6 +2934,7 @@
 #include "yogstation\code\game\gamemodes\gangs\dominator.dm"
 #include "yogstation\code\game\gamemodes\gangs\gang_items.dm"
 #include "yogstation\code\game\gamemodes\gangs\gang_pen.dm"
+#include "yogstation\code\game\gamemodes\gangs\gang_structures.dm"
 #include "yogstation\code\game\gamemodes\gangs\gangs.dm"
 #include "yogstation\code\game\gamemodes\gangs\gangtool.dm"
 #include "yogstation\code\game\gamemodes\shadowling\shadowling.dm"

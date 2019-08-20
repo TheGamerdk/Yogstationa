@@ -260,3 +260,20 @@
 
 /obj/item/gangtool/spare/lt
 	promotable = TRUE
+
+/obj/item/gangtool/prison
+	name = "test"
+
+/obj/item/gangtool/prison/Initialize()
+	update_icon()
+	if(buyable_items.len)
+		return ..()
+	for(var/i in subtypesof(/datum/gang_item/prison))
+		var/datum/gang_item/prison/G = i
+		var/id = initial(G.id)
+		var/cat = initial(G.category)
+		if(id)
+			if(!islist(buyable_items[cat]))
+				buyable_items[cat] = list()
+			buyable_items[cat][id] = new G
+	.=..()
