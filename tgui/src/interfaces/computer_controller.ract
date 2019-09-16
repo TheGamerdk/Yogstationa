@@ -1,0 +1,19 @@
+<ui-display title='Dashboard'>
+  <ui-section label='Total Processing Power 2'>
+    <span>{{data.cpu_power}}tFLOPS</span>
+  </ui-section>
+</ui-display>
+<ui-display title='Servers'>
+  <ui-tabs tabs='{{tabs}}'>
+    {{#each data.servers}}
+    <tab name='{{name}}'>
+      <ui-section label='{{name}}' candystripe nowrap>
+        <ui-section label='Temperature'>
+          <ui-bar min='{{minTemp}}' max='{{maxTemp}}' value='{{temp}}'
+          state='{{temp <= dangerTemp ? "average" : "good"}}'>{{Math.round(temp)}}</ui-bar>
+        </ui-section>
+      </ui-section>
+    </tab>
+    {{/each}}
+  </ui-tabs>
+</ui-display>

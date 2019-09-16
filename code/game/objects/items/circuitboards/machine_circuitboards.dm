@@ -138,6 +138,14 @@
 		/obj/item/stack/cable_coil = 1,
 		/obj/item/stock_parts/subspace/filter = 1)
 
+/obj/item/circuitboard/machine/rnd/modular_server
+	name = "Modular Server (Machine Board)"
+	icon_state = "science"
+	build_path = /obj/machinery/rnd/modular_server
+	req_components = list(
+		/obj/item/stock_parts/manipulator = 2,
+		/obj/item/stack/cable_coil = 1)
+
 /obj/item/circuitboard/machine/tesla_coil
 	name = "Tesla Controller (Machine Board)"
 	icon_state = "engineering"
