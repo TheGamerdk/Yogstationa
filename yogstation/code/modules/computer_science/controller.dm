@@ -9,8 +9,10 @@
 
 	req_access = list(ACCESS_TOX)	//Access needed to use the console
 
+	var/list/tester = list()
 
-/obj/machinery/computer/computer_controller/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state)
+
+/obj/machinery/computer/computer_controller/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.not_incapacitated_state)
 
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 
@@ -29,21 +31,26 @@
 	var/list/data = list()
 	data["cpu_power"] = getCpuPower()
 
-	data["servers"] = list()
-	for(var/obj/machinery/rnd/modular_server/server in linked)
+	var/list/servers = list()
+	for(var/X in linked)
+		var/obj/machinery/rnd/modular_server/server = X
 		var/datum/modular_server/S = server.server_datum
-		data["servers"] += list(list(
+		servers += list(list(
 			"name" = server.name,
+			"temp" = S.temp,
 			"minTemp" = S.minTemp,
 			"maxTemp" = S.maxTemp,
-			"dangerTemp" = S.dangerTemp,
-			"temp" = S.temp
+			"dangerTemp" = S.dangerTemp
 		))
+
+	data["servers"] = servers
+	tester = data
 	return data
 
 /obj/machinery/computer/computer_controller/ui_act(action, params)
 	if(..())
 		return
+	. = TRUE
 
 
 /obj/item/circuitboard/computer/computer_controller
